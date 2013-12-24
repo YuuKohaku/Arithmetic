@@ -9,7 +9,6 @@ void main()
 	int i = 0, j = 0;
 	int unique = 0, charcode = 0;
 	int counters[AB_SZ] = {0};
-	double ent = 0;
 
 	while(1)
 	{
@@ -48,7 +47,6 @@ void main()
 		{
 			if( counters[i] != 0 )
 			{
-				ent+=(double)counters[i]/Scale*log((double)counters[i]/Scale);
 				Intervals[j].c = (char)i;
 				Intervals[j].low = low;
 				low = low + counters[i];
@@ -57,7 +55,7 @@ void main()
 			} 
 		}
 
-		printf("Entrophy: %f", ent);
+
 		fclose(message);
 		encode();
 		decode();
@@ -122,8 +120,8 @@ void encode()
 	finish_output(output);
 
 	end = clock();
-	diff = difftime(end, start);
-	speed = (double)sz/diff;
+	diff = difftime(end, start)/CLOCKS_PER_SEC;
+	speed = (double)sz/diff/1024/1024;
 	printf("Encoding speed: %f MB/sec\n", speed);
 	
 	fclose(output);
@@ -183,8 +181,8 @@ void decode()
 	printf("Decoded file size: %d bytes\n", sz);
 	printf("Compression: %f\n", 100*(1.0 - (double)enc_sz/sz));
 	
-	diff = difftime(end, start);
-	speed = (double)sz/diff;
+	diff = difftime(end, start)/CLOCKS_PER_SEC;
+	speed = (double)sz/diff/1024/1024;
 	printf("Decoding speed: %f MB/sec\n", speed);
 
 	fclose(output);
